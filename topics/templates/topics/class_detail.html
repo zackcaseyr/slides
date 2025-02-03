@@ -1,0 +1,39 @@
+{% extends 'topics/base.html' %}
+
+{% block title %}{{ class.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ class.name }}</h1>
+            <div class="btn-group">
+                <a href="{% url 'class-update' class.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'class-delete' class.pk %}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        
+        <p class="lead">{{ class.description }}</p>
+
+        <h2 class="mt-4">Topics</h2>
+        <div class="list-group">
+            {% for topic in class.topics.all %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-1">{{ topic.title }}</h5>
+                    <a href="{% url 'topic-detail' topic.pk %}" class="btn btn-info btn-sm">View</a>
+                </div>
+                <p class="mb-1">{{ topic.description|truncatewords:30 }}</p>
+            </div>
+            {% empty %}
+            <p>No topics available for this class.</p>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'topic-create' %}" class="btn btn-primary">Add New Topic</a>
+            <a href="{% url 'class-list' %}" class="btn btn-secondary">Back to Classes</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

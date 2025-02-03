@@ -1,0 +1,43 @@
+{% extends 'topics/base.html' %}
+
+{% block title %}{{ slide.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1>{{ slide.title }}</h1>
+                <h6 class="text-muted">Topic: {{ slide.topic.title }}</h6>
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'slide-update' slide.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'slide-delete' slide.pk %}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+
+        {% if slide.image %}
+        <div class="mb-4">
+            <img src="{{ slide.image.url }}" class="img-fluid rounded" alt="{{ slide.title }}">
+        </div>
+        {% endif %}
+        
+        <div class="mb-4">
+            {{ slide.content|linebreaks }}
+        </div>
+
+        {% if slide.video %}
+        <div class="mb-4">
+            <video controls class="w-100">
+                <source src="{{ slide.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'slide-list' %}" class="btn btn-secondary">Back to Slides</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

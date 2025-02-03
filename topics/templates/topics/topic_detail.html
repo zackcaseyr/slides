@@ -1,0 +1,50 @@
+{% extends 'topics/base.html' %}
+
+{% block title %}{{ topic.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1>{{ topic.title }}</h1>
+                <h6 class="text-muted">Class: {{ topic.class_obj.name }}</h6>
+            </div>
+            <div class="btn-group">
+                <a href="{% url 'topic-present' topic.pk %}" class="btn btn-primary">Start Presentation</a>
+                <a href="{% url 'topic-pdf' topic.pk %}" class="btn btn-success">Download PDF</a>
+                <a href="{% url 'topic-update' topic.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'topic-delete' topic.pk %}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        
+        <p class="lead">{{ topic.description }}</p>
+
+        <h2 class="mt-4">Slides</h2>
+        <div class="list-group">
+            {% for slide in topic.slides.all %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-1">{{ slide.title }}</h5>
+                    <a href="{% url 'slide-detail' slide.pk %}" class="btn btn-info btn-sm">View</a>
+                </div>
+                <p class="mb-1">{{ slide.content|truncatewords:30 }}</p>
+                {% if slide.image %}
+                <small class="text-muted">Has image</small>
+                {% endif %}
+                {% if slide.video %}
+                <small class="text-muted">Has video</small>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>No slides available for this topic.</p>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'slide-create' %}" class="btn btn-primary">Add New Slide</a>
+            <a href="{% url 'topic-list' %}" class="btn btn-secondary">Back to Topics</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'topics/base.html' %}
+
+{% block title %}Slides{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Slides</h1>
+    <a href="{% url 'slide-create' %}" class="btn btn-primary">Create New Slide</a>
+</div>
+
+<div class="row">
+    {% for slide in slides %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if slide.image %}
+            <img src="{{ slide.image.url }}" class="card-img-top" alt="{{ slide.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ slide.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ slide.topic.title }}</h6>
+                <p class="card-text">{{ slide.content|truncatewords:30 }}</p>
+                {% if slide.video %}
+                <p class="text-muted"><small>Has video content</small></p>
+                {% endif %}
+                <div class="btn-group">
+                    <a href="{% url 'slide-detail' slide.pk %}" class="btn btn-info">View</a>
+                    <a href="{% url 'slide-update' slide.pk %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'slide-delete' slide.pk %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center">No slides available.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
